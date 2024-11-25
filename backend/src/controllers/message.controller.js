@@ -6,7 +6,7 @@ export const getUsersSidebar = async (req, res) => {
     try {
         const loggedInUserId = req.user._id;
         const filterUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
-        res.status(200).json({ filterUsers });
+        res.status(200).json(filterUsers);
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }
@@ -21,7 +21,7 @@ export const getMessages = async (req, res) => {
             $or: [{senderId: myId, receiverId: userToChatId}, {senderId: userToChatId, receiverId: myId}]
         });
 
-        res.status(200).json({ messages });
+        res.status(200).json( messages );
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }
@@ -39,7 +39,7 @@ export const sendMessage = async (req, res) => {
             imageUrl = uploadResponse.secure_url;
         }
 
-        const newMessage = await Message.create({
+        const newMessage = new Message({
             senderId,
             receiverId,
             text,
